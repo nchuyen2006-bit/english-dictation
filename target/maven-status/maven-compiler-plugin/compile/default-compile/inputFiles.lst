@@ -1,0 +1,10 @@
+D:\javaweb\EnglishDictation\src\main\java\com\java\DTO\LessonDTO.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\repository\LessonRepository.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\api\LessonsAPI.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\Application.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\repository\entity\LessonEntity.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\repository\impl\LessonRepositoryIMPL.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\service\LessonService.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\utils\StringUtil.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\service\impl\LessonServiceIMPL.java
+D:\javaweb\EnglishDictation\src\main\java\com\java\utils\ConnectionJDBCUtil.java

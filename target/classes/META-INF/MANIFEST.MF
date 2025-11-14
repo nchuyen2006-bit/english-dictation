@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: Admin
+Build-Jdk: 21.0.8
+Implementation-Title: EnglishDictation
+Implementation-Version: 1.0
+Implementation-Vendor-Id: com.java
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/EnglishDictation
+Created-By: Maven Integration for Eclipse
+
