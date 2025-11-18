@@ -1,33 +1,34 @@
 package com.java.repository.entity;
 
 public class LessonEntity {
-	private String code;
-	private String name;
-	private String type;
-	private String status;
-	public String getCode() {
-		return code;
+	private Integer id;
+	private Integer category_id;
+	private Integer section_id;
+	private Integer order_num;
+	
+	public Integer getId() {
+		return id;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public Integer getCategory_id() {
+		return category_id;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCategory_id(Integer category_id) {
+		this.category_id = category_id;
 	}
-	public String getType() {
-		return type;
+	public Integer getSection_id() {
+		return section_id;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setSection_id(Integer section_id) {
+		this.section_id = section_id;
 	}
-	public String getStatus() {
-		return status;
+	public Integer getOrder_num() {
+		return order_num;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setOrder_num(Integer order_num) {
+		this.order_num = order_num;
 	}
 	
 }

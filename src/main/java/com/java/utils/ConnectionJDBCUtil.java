@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionJDBCUtil {
-		static final String DB_URL = "jdbc:mysql://localhost:3306/dol_dictation?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+		static final String DB_URL = "jdbc:mysql://localhost:3306/dol_dictation_test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 		static final String USER = "root";
 		static final String PASS = "123456";
 		public static Connection getConnection() {

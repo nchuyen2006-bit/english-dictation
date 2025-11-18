@@ -1,6 +1,6 @@
-package com.java.DTO;
+package com.java.Model;
 
-public class LessonDTO {
+public class CategoryDTO {
 	private String code;
 	private String name;
 	private String type;
