@@ -10,4 +10,5 @@ import com.java.repository.entity.CategoryEntity;
 public interface CategoryService {
 	public List<CategoryDTO> findAll(Map<String,Object> params);
 	public int addCategory(CategoryEntity c);
+	public boolean deleteCategory(int id);
 }

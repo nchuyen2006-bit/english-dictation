@@ -35,5 +35,8 @@ public class CategoryServiceIMPL implements CategoryService{
 	public int addCategory(CategoryEntity c) {
 		 return categoryRepository.addCategory(c);
 	}
+	public boolean deleteCategory(int id) {
+		return categoryRepository.deleteCategory(id);
+	}
 	
 }
