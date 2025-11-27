@@ -1,10 +1,50 @@
 package com.java.repository.entity;
 
-public class LessonEntity {
+import java.util.List;
+
+public class LessonEntity  {
 	private Integer id;
 	private Integer category_id;
 	private Integer section_id;
 	private Integer order_num;
+	private Integer duration;
+	private boolean is_premum;
+	private String audioUrl;
+	private Integer audioDuration;
+	
+	public boolean isIs_premum() {
+		return is_premum;
+	}
+	public void setIs_premum(boolean is_premum) {
+		this.is_premum = is_premum;
+	}
+	
+	public Integer getDuration() {
+		return duration;
+	}
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+	public String getAudioUrl() {
+		return audioUrl;
+	}
+	public void setAudioUrl(String audioUrl) {
+		this.audioUrl = audioUrl;
+	}
+	public Integer getAudioDuration() {
+		return audioDuration;
+	}
+	public void setAudioDuration(Integer audioDuration) {
+		this.audioDuration = audioDuration;
+	}
+	public String getTranscriptText() {
+		return transcriptText;
+	}
+	public void setTranscriptText(String transcriptText) {
+		this.transcriptText = transcriptText;
+	}
+	private String transcriptText;
+	
 	
 	public Integer getId() {
 		return id;

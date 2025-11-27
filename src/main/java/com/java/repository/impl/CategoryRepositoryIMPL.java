@@ -63,7 +63,7 @@ public class CategoryRepositoryIMPL implements CategoryRepository {
 	
 	@Override
 	public List<CategoryEntity> findAll(Map<String, Object> params)  {
-		StringBuilder sql=new StringBuilder(" select categories.name ,categories.code,categories.total_lessons,programs.type,user_progress.status from categories inner join lessons on lessons.category_id=lessons.id ");
+		StringBuilder sql=new StringBuilder(" select categories.name ,categories.code,categories.total_lessons,programs.type,user_progress.status from categories inner join lessons on lessons.category_id=categories.id ");
 		innerjoin(params,sql);
 		StringBuilder where=new StringBuilder(" where 1=1 ");
 		querySpecial(params,where);
@@ -91,7 +91,7 @@ public class CategoryRepositoryIMPL implements CategoryRepository {
 	public int addCategory(CategoryEntity c) {
 		String sql=" insert into categories(program_id,name,code, slug, total_lessons) "+" values(?,?,?,?,?) ";
 		try(Connection conn = ConnectionJDBCUtil.getConnection();
-	             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+	        PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 			//ps.setInt(1,c.getId());
 			ps.setInt(1,c.getProgram_id());
 			ps.setString(2,c.getName());
@@ -108,6 +108,33 @@ public class CategoryRepositoryIMPL implements CategoryRepository {
 		}
 		return -1;
 	}
-
-	
+	public boolean deleteCategory(int id) {
+		String deleteCategorysql="delete from categories where id =? ";
+		String deleteLessonsql="delete from lessons where category_id =? ";
+		Connection conn=null;
+		try {
+			conn=ConnectionJDBCUtil.getConnection();
+			conn.setAutoCommit(false);
+			try(PreparedStatement ps1=conn.prepareStatement(deleteCategorysql)){
+				ps1.setInt(1,id);
+				ps1.executeUpdate();	
+				}
+			try (PreparedStatement ps2=conn.prepareStatement(deleteLessonsql)){
+				ps2.setInt(1, id);
+				ps2.executeUpdate();
+			}
+			conn.commit();
+			return true;
+		}catch (Exception e) {
+	        if (conn != null) {
+	            try { conn.rollback(); } catch (Exception ex) {}
+	        }
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        if (conn != null) {
+	            try { conn.setAutoCommit(true); conn.close(); } catch (Exception e) {}
+	        }
+	    }
+	}
 }

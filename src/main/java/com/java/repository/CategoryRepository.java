@@ -9,4 +9,5 @@ import com.java.repository.entity.CategoryEntity;
 public interface CategoryRepository {
 	public List<CategoryEntity> findAll(Map<String, Object> params);
 	public int addCategory(CategoryEntity c); 
+	public boolean deleteCategory(int id);
 }
