@@ -92,6 +92,4 @@ public class CategoryEntity {
 	public void setTotal_duration(Integer total_duration) {
 		this.total_duration = total_duration;
 	}
-	
-	
 }

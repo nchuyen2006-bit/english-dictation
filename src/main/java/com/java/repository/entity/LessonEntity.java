@@ -44,8 +44,6 @@ public class LessonEntity  {
 		this.transcriptText = transcriptText;
 	}
 	private String transcriptText;
-	
-	
 	public Integer getId() {
 		return id;
 	}
@@ -70,5 +68,4 @@ public class LessonEntity  {
 	public void setOrder_num(Integer order_num) {
 		this.order_num = order_num;
 	}
-	
 }
