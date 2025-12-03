@@ -28,12 +28,12 @@ public class LessonRepositoryIMPL implements LessonRepository {
 
 	        for (LessonEntity i : lesson) {
 	            ps.setInt(1, i.getCategory_id());
-	            ps.setInt(2, i.getSection_id());        // ← DÒNG NÀY BỊ THIẾU DẤU NGOẶC ĐÓNG TRONG ẢNH CỦA BẠN!!!
+	            ps.setInt(2, i.getSection_id());        
 	            ps.setInt(3, i.getDuration());
 	            ps.setInt(4, i.getOrder_num());
 	            ps.setBoolean(5, i.isIs_premum());
 
-	            ps.addBatch(); // quan trọng: dùng batch để nhanh hơn
+	            ps.addBatch(); 
 	        }
 
 	        int[] results = ps.executeBatch(); // thực thi tất cả
@@ -57,7 +57,7 @@ public class LessonRepositoryIMPL implements LessonRepository {
 	        		conn.rollback(); 
 	        		} catch(Exception ex) {}
 	        e.printStackTrace();
-	        return insert; // vẫn trả về những cái đã insert được (hoặc rỗng nếu lỗi ngay từ đầu)
+	        return insert; 
 	    }
 	}
 	public boolean deletLesson(int id )  {
