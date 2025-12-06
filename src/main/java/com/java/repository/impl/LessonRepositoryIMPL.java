@@ -73,4 +73,61 @@ public class LessonRepositoryIMPL implements LessonRepository {
 		}
 		
 	}
+	@Override
+	public List<LessonEntity> getLessonsByCategoryId(int categoryId) {
+	    String sql = "SELECT l.id, l.category_id, l.section_id, l.order_num, l.duration, l.is_premium, " +
+	                 "a.url as audioUrl, a.duration as audioDuration, " +
+	                 "t.content_en as script, t.content_clean , t.content_vi as translation " +
+	                 "FROM lessons l " +
+	                 "LEFT JOIN audios a ON a.lesson_id = l.id " +
+	                 "LEFT JOIN transcripts t ON t.audio_id = a.id " +
+	                 "WHERE l.category_id = ? " +
+	                 "ORDER BY l.order_num ASC";
+	    
+	    List<LessonEntity> result = new ArrayList<>();
+	    
+	    try (Connection conn = ConnectionJDBCUtil.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ps.setInt(1, categoryId);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+	            LessonEntity lesson = new LessonEntity();
+	            lesson.setId(rs.getInt("id"));
+	            lesson.setCategory_id(rs.getInt("category_id"));
+	            
+	            // Handle NULL values
+	            Integer sectionId = (Integer) rs.getObject("section_id");
+	            lesson.setSection_id(sectionId);
+	            
+	            lesson.setOrder_num(rs.getInt("order_num"));
+	            lesson.setDuration(rs.getInt("duration"));
+	            lesson.setIs_premum(rs.getBoolean("is_premium"));
+	            
+	            // Audio info
+	            lesson.setAudioUrl(rs.getString("audioUrl"));
+	            Integer audioDuration = (Integer) rs.getObject("audioDuration");
+	            lesson.setAudioDuration(audioDuration != null ? audioDuration : 0);
+	            
+	            // Transcript
+	            String scriptContent = rs.getString("script");
+	            lesson.setScript(scriptContent); 
+	            lesson.setTranscriptText(scriptContent); 
+	            lesson.setContent_clean(rs.getString("content_clean"));
+	            lesson.setTranslation(rs.getString("translation"));
+	            
+	            result.add(lesson);
+	        }
+	        
+	        System.out.println("Found " + result.size() + " lessons for category " + categoryId);
+	        
+	    } catch (SQLException e) {
+	        System.err.println("SQL Error in getLessonsByCategoryId:");
+	        System.err.println("SQL: " + sql);
+	        e.printStackTrace();
+	    }
+	    
+	    return result;
+	}
 }

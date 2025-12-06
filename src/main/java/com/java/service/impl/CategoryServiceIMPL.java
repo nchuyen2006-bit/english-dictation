@@ -17,18 +17,22 @@ public class CategoryServiceIMPL implements CategoryService{
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Override
 	public List<CategoryDTO> findAll(Map<String,Object> params){
-		List<CategoryEntity> categoryEntity=categoryRepository.findAll(params);
-		List<CategoryDTO> result =new ArrayList<>();
-		for(CategoryEntity i: categoryEntity) {
-			CategoryDTO lesson=new CategoryDTO();
-			lesson.setName(i.getName());
-			lesson.setStatus(i.getStatus());
-			lesson.setCode(i.getCode());
-			lesson.setType(i.getType());
-			result.add(lesson);
-		}
-		return result;
+	    List<CategoryEntity> categoryEntity = categoryRepository.findAll(params);
+	    List<CategoryDTO> result = new ArrayList<>();
+	    
+	    for(CategoryEntity i: categoryEntity) {
+	        CategoryDTO dto = new CategoryDTO();
+	        dto.setId(i.getId());        
+	        dto.setName(i.getName());
+	        dto.setStatus(i.getStatus());
+	        dto.setCode(i.getCode());
+	        dto.setType(i.getType());
+	        result.add(dto);
+	    }
+	    
+	    return result;
 	}
 
 	@Override

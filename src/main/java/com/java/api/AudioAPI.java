@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,17 +22,12 @@ import com.java.service.AudioService;
 
 @RestController
 @RequestMapping("/api/audios")
+@CrossOrigin(origins = "*")
 public class AudioAPI {
 
     @Autowired
     private AudioService audioService;
 
-    /**
-     * Upload audio file cho lesson
-     * POST /api/audios/upload
-     * Form-data: file, lessonId, duration
-     * Requires: Admin or Teacher role
-     */
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadAudio(
             @RequestParam("file") MultipartFile file,
@@ -84,7 +80,7 @@ public class AudioAPI {
      * GET /api/audios/lesson/{lessonId}
      */
     @GetMapping("/lesson/{lessonId}")
-    public ResponseEntity<Map<String, Object>> getAudioUrl(@PathVariable Integer lessonId) {
+    public ResponseEntity<Map<String, Object>> getAudioUrL(@PathVariable Integer lessonId) {
         Map<String, Object> response = new HashMap<>();
         
         try {

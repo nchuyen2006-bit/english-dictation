@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class AudioEntity {
     private Integer id;
+    
     private Integer lesson_id;
     private String url;
     private Integer duration;

@@ -11,9 +11,30 @@ public class LessonEntity  {
 	private boolean is_premum;
 	private String audioUrl;
 	private Integer audioDuration;
-	
+    private String translation;
+    private String script;  
+    private String content_clean; 
+    
+    public String getScript() {
+		return script;
+	}
+	public void setScript(String script) {
+		this.script = script;
+	}
+	public String getContent_clean() {
+		return content_clean;
+	}
+	public void setContent_clean(String content_clean) {
+		this.content_clean = content_clean;
+	}
 	public boolean isIs_premum() {
 		return is_premum;
+	}
+	public String getTranslation() {
+		return translation;
+	}
+	public void setTranslation(String translation) {
+		this.translation = translation;
 	}
 	public void setIs_premum(boolean is_premum) {
 		this.is_premum = is_premum;

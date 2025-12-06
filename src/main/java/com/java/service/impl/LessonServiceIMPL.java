@@ -21,4 +21,8 @@ public class LessonServiceIMPL implements LessonService{
 		
 		return lessonRepository.deletLesson(id);
 	}
+	@Override
+	public List<LessonEntity> getLessonsByCategoryId(int categoryId) {
+	    return lessonRepository.getLessonsByCategoryId(categoryId);
+	}
 }

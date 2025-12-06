@@ -1,7 +1,7 @@
 package com.java.Model;
 
 public class AudioUploadDTO {
-    private Integer lessonId;
+	private Integer lessonId;
     private String fileName;
     private String fileUrl;
     private Integer duration;
