@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.java.service.CategoryService;
 import com.java.service.LessonService;
 
 @RestController
+@CrossOrigin(origins = "*")  
 public class CategoryAPI {
     
     @Autowired
@@ -46,7 +48,6 @@ public class CategoryAPI {
             response.put("data", result);
             response.put("total", result.size());
             
-            // Thêm thông tin về filters đã áp dụng
             if (params.containsKey("keyword")) {
                 response.put("keyword", params.get("keyword"));
             }
@@ -60,10 +61,35 @@ public class CategoryAPI {
         }
     }
     
-    /**
-     * Search categories by keyword only
-     * GET /api/lesson/search?keyword=nano
-     */
+    @GetMapping("/api/category/{categoryId}/lessons")
+    public ResponseEntity<Map<String, Object>> getLessonsByCategory(
+            @PathVariable("categoryId") int categoryId) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            System.out.println("Getting lessons for category: " + categoryId);
+            
+            List<LessonEntity> lessons = lessonService.getLessonsByCategoryId(categoryId);
+            
+            System.out.println("Found " + lessons.size() + " lessons");
+            
+            response.put("success", true);
+            response.put("data", lessons);
+            response.put("total", lessons.size());
+            response.put("categoryId", categoryId);
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            System.err.println(" Error getting lessons: " + e.getMessage());
+            e.printStackTrace();
+            
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    
     @GetMapping("/api/lesson/search")
     public ResponseEntity<Map<String, Object>> searchCategories(@RequestParam String keyword) {
         Map<String, Object> response = new HashMap<>();
@@ -93,17 +119,17 @@ public class CategoryAPI {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
     /**
      * Create category
      * POST /api/categories
      */
-    @RequestMapping("/api/categories")
-    @PostMapping
+    @PostMapping("/api/categories")
     public ResponseEntity<Map<String, Object>> createCategory(@RequestBody CategoryEntity category) {
         Map<String, Object> response = new HashMap<>();
         
         try {
+            System.out.println(" Creating category: " + category.getName());
+            
             int categoryId = categoryService.addCategory(category);
             
             if (categoryId > 0) {
@@ -118,6 +144,7 @@ public class CategoryAPI {
             }
             
         } catch (Exception e) {
+            e.printStackTrace();
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -128,12 +155,13 @@ public class CategoryAPI {
      * Add lessons (batch)
      * POST /api/add-lesson
      */
-    @RequestMapping("/api/add-lesson")
-    @PostMapping
+    @PostMapping("/api/add-lesson")
     public Map<String, Object> addLesson(@RequestBody List<LessonEntity> lessons) {
         Map<String, Object> result = new HashMap<>();
         
         try {
+            System.out.println("📝 Adding " + lessons.size() + " lessons");
+            
             List<LessonEntity> addedLessons = lessonService.addLesson(lessons);
             
             if (addedLessons != null && !addedLessons.isEmpty()) {

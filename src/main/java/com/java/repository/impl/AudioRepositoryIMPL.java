@@ -75,6 +75,7 @@ public class AudioRepositoryIMPL implements AudioRepository {
             ps.setInt(1, lessonId);
             ResultSet rs = ps.executeQuery();
             
+            
             if (rs.next()) {
                 audio = new AudioEntity();
                 audio.setId(rs.getInt("id"));

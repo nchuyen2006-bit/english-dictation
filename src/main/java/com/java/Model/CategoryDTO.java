@@ -1,6 +1,7 @@
 package com.java.Model;
 
 public class CategoryDTO {
+	private Integer id;
 	private String code;
 	private String name;
 	private String type;
@@ -11,6 +12,12 @@ public class CategoryDTO {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
