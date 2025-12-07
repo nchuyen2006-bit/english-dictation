@@ -129,8 +129,8 @@ public class AnswerRepositoryIMPL implements AnswerRepository {
 
     @Override
     public int createUserProgress(UserProgressEntity progress) {
-        String sql = "INSERT INTO user_progress(user_id, lesson_id, status, attempts, score) " +
-                     "VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user_progress(user_id, lesson_id, status, attempts, score, completed_at) " +
+                     "VALUES(?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = ConnectionJDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -140,14 +140,19 @@ public class AnswerRepositoryIMPL implements AnswerRepository {
             ps.setString(3, progress.getStatus());
             ps.setInt(4, progress.getAttempts());
             ps.setBigDecimal(5, progress.getScore());
+            ps.setTimestamp(6, progress.getCompleted_at());
             
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             
             if (rs.next()) {
-                return rs.getInt(1);
+                int generatedId = rs.getInt(1);
+                System.out.println("✅ Created progress ID: " + generatedId);
+                return generatedId;
             }
+            
         } catch (SQLException e) {
+            System.err.println("❌ Error creating progress:");
             e.printStackTrace();
         }
         
@@ -157,7 +162,7 @@ public class AnswerRepositoryIMPL implements AnswerRepository {
     @Override
     public int updateUserProgress(UserProgressEntity progress) {
         String sql = "UPDATE user_progress SET status = ?, attempts = ?, score = ?, " +
-                     "completed_at = ?, updated_at = NOW() " +
+                     "completed_at = ?, updated_at = CURRENT_TIMESTAMP " +
                      "WHERE user_id = ? AND lesson_id = ?";
         
         try (Connection conn = ConnectionJDBCUtil.getConnection();
@@ -170,8 +175,13 @@ public class AnswerRepositoryIMPL implements AnswerRepository {
             ps.setInt(5, progress.getUser_id());
             ps.setInt(6, progress.getLesson_id());
             
-            return ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("✅ Updated progress for user " + progress.getUser_id() + 
+                             ", lesson " + progress.getLesson_id());
+            return rowsAffected;
+            
         } catch (SQLException e) {
+            System.err.println("❌ Error updating progress:");
             e.printStackTrace();
         }
         
