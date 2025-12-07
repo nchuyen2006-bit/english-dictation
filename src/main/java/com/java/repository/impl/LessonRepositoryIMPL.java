@@ -60,18 +60,79 @@ public class LessonRepositoryIMPL implements LessonRepository {
 	        return insert; 
 	    }
 	}
-	public boolean deletLesson(int id )  {
-		String deletsql= " delete from lessons where id = ? ";
-		try(Connection conn=ConnectionJDBCUtil.getConnection();
-			PreparedStatement ps=conn.prepareStatement(deletsql)){
-			ps.setInt(1, id);
-			int rowsAffected = ps.executeUpdate();
-			return rowsAffected > 0;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
+	@Override
+	public boolean deletLesson(int id) {
+	    Connection conn = null;
+	    try {
+	        conn = ConnectionJDBCUtil.getConnection();
+	        conn.setAutoCommit(false);  // Bắt đầu transaction
+	        
+	        // 1️⃣ Lấy audio_id từ bảng audios
+	        String getAudioIdSql = "SELECT id FROM audios WHERE lesson_id = ?";
+	        Integer audioId = null;
+	        
+	        try (PreparedStatement ps = conn.prepareStatement(getAudioIdSql)) {
+	            ps.setInt(1, id);
+	            ResultSet rs = ps.executeQuery();
+	            if (rs.next()) {
+	                audioId = rs.getInt("id");
+	                System.out.println("Found audio_id: " + audioId + " for lesson_id: " + id);
+	            }
+	        }
+	        
+	        // 2️⃣ Xóa transcript (nếu có audio_id)
+	        if (audioId != null) {
+	            String deleteTranscriptSql = "DELETE FROM transcripts WHERE audio_id = ?";
+	            try (PreparedStatement ps = conn.prepareStatement(deleteTranscriptSql)) {
+	                ps.setInt(1, audioId);
+	                int transcriptRows = ps.executeUpdate();
+	                System.out.println("Deleted " + transcriptRows + " transcript(s)");
+	            }
+	        }
+	        
+	        // 3️⃣ Xóa audio
+	        String deleteAudioSql = "DELETE FROM audios WHERE lesson_id = ?";
+	        try (PreparedStatement ps = conn.prepareStatement(deleteAudioSql)) {
+	            ps.setInt(1, id);
+	            int audioRows = ps.executeUpdate();
+	            System.out.println("Deleted " + audioRows + " audio(s)");
+	        }
+	        
+	        // 4️⃣ Xóa lesson
+	        String deleteLessonSql = "DELETE FROM lessons WHERE id = ?";
+	        boolean result = false;
+	        try (PreparedStatement ps = conn.prepareStatement(deleteLessonSql)) {
+	            ps.setInt(1, id);
+	            int lessonRows = ps.executeUpdate();
+	            result = lessonRows > 0;
+	            System.out.println("Deleted " + lessonRows + " lesson(s)");
+	        }
+	        
+	        conn.commit();  
+	        System.out.println("Successfully deleted lesson " + id + " and related data");
+	        return result;
+	        
+	    } catch (Exception e) {
+	        if (conn != null) {
+	            try {
+	                conn.rollback();  
+	                System.err.println("Rolled back transaction");
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        if (conn != null) {
+	            try {
+	                conn.setAutoCommit(true);  
+	                conn.close();
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
 	@Override
 	public List<LessonEntity> getLessonsByCategoryId(int categoryId) {
